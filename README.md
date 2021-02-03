@@ -23,10 +23,10 @@ $ node .
 
 ### Some screenshots
 
-Setup a matchmaking
+Setup a matchmaking<br>
 [![Setup Matchmaking](https://raw.githubusercontent.com/999Samurai/Snow8s/main/screenshots/setup_matchmaking.png "STEUP_MM")](https://github.com/999Samurai/Snow8s)
 
-Matchmaking starting
+Matchmaking starting<br>
 [![Matchmaking Started](https://raw.githubusercontent.com/999Samurai/Snow8s/main/screenshots/matchmaking_started.png "MM_STARTED")](https://github.com/999Samurai/Snow8s)
 
 License
