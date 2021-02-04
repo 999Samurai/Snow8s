@@ -1,6 +1,6 @@
 const { Client, Collection } = require('discord.js');
 const mysql = require("mysql");
-require('dotenv-safe').config({ allowEmptyValues: true })
+require('dotenv').config({ allowEmptyValues: true })
 const client = new Client({ disableEveryone: true });
 
 client.commands = new Collection();
@@ -27,7 +27,13 @@ const User = new UserObject(conn);
 const prefix = process.env.PREFIX;
 
 client.on('ready', async () => {
-    await User.resetQueue();
+    // When bot starts if database doens't has any table, this error will happen.
+    await User.resetQueue().catch((e) => {
+        console.error({
+            message: 'Are you sure you created the database tables ?',
+            error: e
+        })
+    })
     console.log(`Logged in as ${client.user.tag}!`);
 });
 

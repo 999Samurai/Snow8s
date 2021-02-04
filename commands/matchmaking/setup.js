@@ -2,7 +2,7 @@ module.exports = {
     name: "setup",
     aliases: [""],
     description: "Create a embed message to setup.",
-    usage: "!setup",
+    usage: `${process.env.PREFIX}setup`,
     run: (client, message, args, conn) => {
 
         if(!message.member.guild.me.hasPermission('ADMINISTRATOR')) return;
