@@ -16,7 +16,7 @@ module.exports = {
         if(data.d.emoji.name == "✋") {
 
             // Queuing
-            if(message.author.id == client.user.id && message.channel.name == "matchmaking") {
+            if(message.author.id == client.user.id && message.channel.name == process.env.SETUP_CHANNEL_NAME) {
 
                 message.reactions.resolve("✋").users.remove(user_id);
 
@@ -68,7 +68,7 @@ module.exports = {
                 let usersInQueue = await User.checkQueueList();
                 if(usersInQueue >= 8) {
                     let usersArray = await User.getQueueList();
-                    let lobbyId = await User.createLobby(usersArray);
+                    let lobbyId = await User.createLobby();
                     await User.addPlayersToLobby(usersArray, lobbyId);
 
                     const embed = new Discord.MessageEmbed()
@@ -83,7 +83,7 @@ module.exports = {
                             await message.react("✅");
                             
                             const collector = message.createReactionCollector((args, user) => 
-                            { return "✅".includes(args._emoji.name) && !user.bot }, { time: 60000, max: 1 });
+                            { return "✅".includes(args._emoji.name) && !user.bot }, { time: 30000, max: 1 });
 
                             collector.on('collect', async () => {
 
@@ -203,7 +203,7 @@ module.exports = {
                     const secondEmbed = new Discord.MessageEmbed()
                     .setColor("#FFFFFF")
                     .setAuthor(client.user.username, client.user.avatarURL)
-                    .setDescription("**Rules**\n**First to Five Ping Pong.**\n\nDefault Shotgun: __**Pump**__\nIf all the players want **pump** or **charge** then you can go with pump.\n\n**Map**\n🗺️ 8585-0663-5258")
+                    .setDescription("**Rules**\n**First to Five Ping Pong.**\n\nDefault Shotgun: __**Lever Pump**__\nIf all the players want **pump** or **charge** then you can go with pump.\n\n**Map**\n🗺️ 8585-0663-5258")
                     .setFooter("Created with 🖤 by 999Samurai");
     
                     await channel.send(secondEmbed);
@@ -327,7 +327,7 @@ module.exports = {
                 const secondEmbed = new Discord.MessageEmbed()
                 .setColor("#FFFFFF")
                 .setAuthor(client.user.username, client.user.avatarURL)
-                .setDescription("**Rules**\n**First to Five Ping Pong.**\n\nDefault Shotgun: __**Pump**__\nIf all the players want **pump** or **charge** then you can go with pump.\n\n**Map**\n🗺️ 8585-0663-5258")
+                .setDescription("**Rules**\n**First to Five Ping Pong.**\n\nDefault Shotgun: __**Lever Pump**__\nIf all the players want **pump** or **charge** then you can go with pump.\n\n**Map**\n🗺️ 8585-0663-5258")
                 .setFooter("Created with 🖤 by 999Samurai");
 
                 await lobbyChannel.send(secondEmbed);

@@ -155,6 +155,32 @@ class User {
         });
     }
 
+    addPlayersToCustomLobby(playersArray, lobbyNumber) {
+        return new Promise((resolve, reject) => {
+
+            var i;
+            let uploadText = "";
+
+            for(i = 0; i < playersArray.length; i++) {
+                if(i == 0) {
+                    uploadText += "(" + playersArray[i].id + ", " + lobbyNumber + ")";
+                } else {
+                    uploadText += ", (" + playersArray[i].id + ", " + lobbyNumber + ")";
+                }
+            }
+
+            let connString = 'INSERT INTO queue(user_id, lobby_id) VALUES ' + uploadText;
+
+            this.conn.query(connString, function (error, results) {
+                if(!error) {
+                    resolve(results);
+                } else {
+                    reject("Error inserting players to queue.");
+                }
+            });
+        });
+    }
+
     setPlayerReady(userId) {
         return new Promise((resolve, reject) => {
             this.conn.query('UPDATE queue SET is_ready = 1 WHERE user_id = ?', [userId], function (error, results) {
@@ -217,6 +243,30 @@ class User {
                     resolve(true);
                 } else {
                     reject("Error removing player from queue.");
+                }
+            });
+        });
+    }
+
+    getQueueCount() {
+        return new Promise((resolve, reject) => {
+            this.conn.query('SELECT COUNT(*) as total FROM users WHERE in_queue = 1', function (error, results) {
+                if(!error) {
+                    resolve(results[0].total);
+                } else {
+                    resolve("Error getting queue count.");
+                }
+            });
+        });
+    }
+
+    getLobbyCount() {
+        return new Promise((resolve, reject) => {
+            this.conn.query('SELECT COUNT(*) as total FROM lobby', function (error, results) {
+                if(!error) {
+                    resolve(results[0].total);
+                } else {
+                    resolve("Error getting lobby count.");
                 }
             });
         });

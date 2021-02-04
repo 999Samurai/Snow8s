@@ -1,4 +1,5 @@
 const { Client, Collection } = require('discord.js');
+const Discord = require('discord.js');
 const mysql = require("mysql");
 require('dotenv').config({ allowEmptyValues: true })
 const client = new Client({ disableEveryone: true });
@@ -33,8 +34,9 @@ client.on('ready', async () => {
             message: 'Are you sure you created the database tables ?',
             error: e
         })
-    })
+    });
     console.log(`Logged in as ${client.user.tag}!`);
+    setInterval(function(){ updateMatchmakingStats(); }, 30000);
 });
 
 client.on('message', async (message) => {
@@ -55,7 +57,7 @@ client.on('message', async (message) => {
     let command = client.commands.get(cmd);
     if (!command) command = client.commands.get(client.aliases.get(cmd));
   
-    if (command) command.run(client, message, args, conn);
+    if (command) command.run(client, message, args, User);
 });
 
 client.on('raw', (data) => {
@@ -66,5 +68,41 @@ client.on('raw', (data) => {
     let command = client.commands.get(data.t);
     if (command) command.run(client, data, User);
 })
+
+function updateMatchmakingStats() {
+
+    try {
+
+        const channelMatchmakingStats = client.channels.cache.find(channel => channel.name === process.env.SETUP_CHANNEL_NAME);
+        channelMatchmakingStats.messages.fetch({ limit: 1 }).then(async (messages) => {
+
+            let setupMessage = messages.first();
+
+            let queueCount = await User.getQueueCount();
+            let lobbyCount = await User.getLobbyCount();
+
+            let desc = '';
+            desc += ':flag_gb: **Want to play 8s?** Click on the :raised_hand: emote below to search for a lobby.\n';
+            desc += ':flag_pt: **Queres jogar 8s?** Clica no emote :raised_hand: abaixo para procurar um lobby.';
+            desc += '\n\n**Matchmaking Stats:**\nPlayers in Queue: ' + queueCount + '\nLobbys in Game: ' + lobbyCount;
+
+            const embed = new Discord.MessageEmbed()
+            .setAuthor("Snow 8s")
+            .setDescription(desc)
+            .setFooter("This stats are updated every 30 seconds. | Created with 🖤 by 999Samurai")
+
+            setupMessage.edit("@everyone", {embed});
+
+        });
+
+    } catch {
+
+        console.error({
+            message: 'The message of the channel is from the bot? It needs to be.',
+            error: "Error while trying to edit the setup message and update matchmaking stats."
+        })
+
+    }
+}
 
 client.login(process.env.TOKEN);
