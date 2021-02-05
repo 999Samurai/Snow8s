@@ -119,7 +119,7 @@ module.exports = {
                         });
                     });
 
-                    setTimeout(function() { startMatch(lobbyId) }, 30000);
+                    setTimeout(function() { startMatch(lobbyId) }, 35000);
 
                 }
             }
