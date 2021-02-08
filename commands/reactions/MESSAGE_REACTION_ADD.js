@@ -66,7 +66,7 @@ module.exports = {
                 }
 
                 let usersInQueue = await User.checkQueueList();
-                if(usersInQueue >= 8) {
+                if(usersInQueue >= process.env.TOTAL_PLAYERS_MATCHMAKING) {
                     let usersArray = await User.getQueueList();
                     let lobbyId = await User.createLobby();
                     await User.addPlayersToLobby(usersArray, lobbyId);
