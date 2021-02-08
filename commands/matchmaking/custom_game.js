@@ -8,13 +8,13 @@ module.exports = {
         const Discord = require('discord.js');
         const pm = require('pretty-ms');
         
-        // Need to be 6 (index's) = 7 players + message author.
-        if(message.mentions.members.size != 6) {
+        // Need to be pair. Mention members + 1 (message author).
+        if((message.mentions.members.size + 1) % 2 != 0 || message.mentions.members.size == 0) {
 
             const embed = new Discord.MessageEmbed()
             .setAuthor("Snow 8s")
             .setColor("#03A40D")
-            .setDescription("You need to mention 7 players.\n\nExample: ```!custom @player1 @player2 @player3 @player4 @player5 @player6 @player7```")
+            .setDescription("You need to mention a pair number of players.\n\nExample: ```!custom @player1```You vs Player1")
             .setFooter("Created with 🖤 by 999Samurai")
 
             message.channel.send(embed);
