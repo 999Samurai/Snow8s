@@ -1,5 +1,5 @@
 # Snow8s
- A discord bot wih the objetive of doing a 4v4 with randomly generated teams.
+ A discord bot wih the objetive of doing a **Team x Team** (You can configure the total of players in the .env) with randomly generated teams.
 
 ### Installation
 
